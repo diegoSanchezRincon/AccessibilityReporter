@@ -146,6 +146,44 @@ if (!fs.existsSync(resultsDir)) fs.mkdirSync(resultsDir);
 ## 🧪 Validación W3C
 - Errores HTML: **${w3cErrors.length}**
 
+${w3cErrors.map(e => {
+    // Formatea la línea y columna
+    let lineaColumna = `**Línea:** ${e.lastLine}`;
+    if (e.firstColumn && e.lastColumn) {
+        lineaColumna += `, **Columna:** ${e.firstColumn}-${e.lastColumn}`;
+    } else if (e.lastColumn) {
+        lineaColumna += `, **Columna:** ${e.lastColumn}`;
+    }
+
+    // Fragmento de código completo
+    let extractBlock = '';
+    if (e.extract) {
+        extractBlock = `\n\`\`\`html\n${e.extract}\n\`\`\``;
+    }
+
+    // Fragmento destacado
+    let hiliteBlock = '';
+    if (
+        typeof e.hiliteStart === 'number' &&
+        typeof e.hiliteLength === 'number' &&
+        e.extract
+    ) {
+        // Resalta el fragmento con <mark>
+        const before = e.extract.substring(0, e.hiliteStart);
+        const highlight = e.extract.substring(e.hiliteStart, e.hiliteStart + e.hiliteLength);
+        const after = e.extract.substring(e.hiliteStart + e.hiliteLength);
+        hiliteBlock = `\n**Fragmento destacado:**\n\`\`\`html\n${before}<mark>${highlight}</mark>${after}\n\`\`\``;
+    }
+
+    return `
+---
+${lineaColumna}
+**Mensaje:** ${e.message}
+${extractBlock}
+${hiliteBlock}
+`.trim();
+}).join('\n\n')}
+
 ## 🧱 Headings Map
 ${headingMap.map(h => `- ${h.level}: ${h.text}`).join('\n')}
 
@@ -158,4 +196,6 @@ ${headingMap.map(h => `- ${h.level}: ${h.text}`).join('\n')}
     const mdPath = path.join(outFolder, `resumen.md`);
     fs.writeFileSync(mdPath, markdown);
     console.log(`✅ Resumen generado: ${mdPath}`);
+
+    console.log('\n\n');
 })();

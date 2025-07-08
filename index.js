@@ -8,7 +8,13 @@ import { fileURLToPath } from 'url';
 import { parse } from 'node-html-parser';
 import { launch } from 'chrome-launcher';
 
-const url = 'http://localhost:3000';
+// Get URL from command line arguments
+const url = process.argv[2] || 'http://localhost:3000';
+
+if (!url.startsWith('http')) {
+    console.error('❌ Por favor, proporciona una URL válida (ej: http://localhost:3000)');
+    process.exit(1);
+}
 
 // Get the current directory of the script
 const __filename = fileURLToPath(import.meta.url);

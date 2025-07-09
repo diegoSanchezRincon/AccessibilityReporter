@@ -11,7 +11,7 @@ import axios from 'axios';
  * }>} An object with the errors found by the validator.
  */
 export async function auditW3c(url) {
-    console.log('🧪 [W3C] Validando HTML con W3C...');
+    console.log('\n🧪 [W3C] Validando HTML con W3C...');
 
     const w3cRes = await axios.get('https://validator.w3.org/nu/', {
         params: { doc: url, out: 'json' },

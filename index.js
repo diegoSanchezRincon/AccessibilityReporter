@@ -8,6 +8,7 @@ import { auditAxeCore } from './utils/axeCoreAudit.js';
 import { auditW3c } from './utils/w3cAudit.js';
 import { generateHeadingsMap } from './utils/headingsMapGenerator.js';
 import { generateMarkdownSummary } from './utils/markdownSummaryGenerator.js';
+import { auditPa11y } from './utils/pa11yAudit.js';
 
 const RESULTS_DIR_NAME = 'results';
 
@@ -39,6 +40,7 @@ async function runAudits() {
     // Run audits
     const lighthouseResult = await auditLighthouse(url, outFolder);
     const axeResult = await auditAxeCore(url, outFolder);
+    const pa11yResult = await auditPa11y(url, outFolder);
     const w3cResult = await auditW3c(url);
     const headingsResult = await generateHeadingsMap(url);
 
@@ -47,6 +49,7 @@ async function runAudits() {
         outFolder,
         lighthouseResult,
         axeResult,
+        pa11yResult,
         w3cResult,
         headingsResult
     });

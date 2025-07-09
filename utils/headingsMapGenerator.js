@@ -12,7 +12,7 @@ import { parse } from 'node-html-parser';
  * }>} An object with the headings map.
  */
 export async function generateHeadingsMap(url) {
-    console.log('🧱 [HeadingsMap] Generando mapa de encabezados...');
+    console.log('\n🧱 [HeadingsMap] Generando mapa de encabezados...');
 
     // Initial setup
     const browser = await puppeteer.launch();

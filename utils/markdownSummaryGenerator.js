@@ -11,10 +11,13 @@ const SUMMARY_FILE_NAME = 'resumen.md';
  * @param {string} params.outFolder
  * @param {Object} params.lighthouseResult
  * @param {Object} params.axeResult
+ * @param {Object} params.pa11yResult
  * @param {Object} params.w3cResult
  * @param {Object} params.headingsResult
  */
-export function generateMarkdownSummary({ url, outFolder, lighthouseResult, axeResult, w3cResult, headingsResult }) {
+export function generateMarkdownSummary({
+    url, outFolder, lighthouseResult, axeResult, pa11yResult, w3cResult, headingsResult
+}) {
     console.log('📋 [MarkdownSummary] Generando resumen...');
 
     const markdown = `# 📋 Auditoría Web - ${url}
@@ -32,6 +35,11 @@ export function generateMarkdownSummary({ url, outFolder, lighthouseResult, axeR
 - Violaciones encontradas: **${axeResult.foundViolations}**
 - Informe JSON: [Ver](./${axeResult.reportPaths.axePath})
 - Informe detallado (Markdown): [Ver](./${axeResult.reportPaths.violationsMdPath})
+
+## ✅ pa11y
+- Errores encontrados: **${pa11yResult.errorsCount}**
+- Informe JSON: [Ver](./${pa11yResult.reportPaths.pa11yJsonPath})
+- Informe HTML: [Ver](./${pa11yResult.reportPaths.pa11yHtmlPath})
 
 ## 🧪 Validación W3C
 - Errores HTML: **${w3cResult.errorsCount}**

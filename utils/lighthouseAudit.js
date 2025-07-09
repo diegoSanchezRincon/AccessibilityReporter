@@ -23,10 +23,8 @@ export async function auditLighthouse(url, outFolder) {
     const chrome = await launch({ chromeFlags: ['--headless'] });
     const options = { port: chrome.port, output: 'html' };
 
-    console.log();
-
     // Lighthouse Desktop >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    console.log('📊 [Lighthouse] Auditando Desktop...');
+    console.log('\n📊 [Lighthouse] Auditando Desktop...');
 
     const desktopResult = await lighthouse(url, {...options, emulatedFormFactor: "desktop"});
     const lighthouseDesktopReport = desktopResult.report;

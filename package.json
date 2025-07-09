@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "audit": "node index.js --url http://localhost:3000"
+    "audit": "node index.js"
   },
   "keywords": [
     "accessibility",

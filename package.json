@@ -12,13 +12,13 @@
   ],
   "author": "Diego Sánchez",
   "license": "ISC",
-  "description": "",
+  "description": "Accessibility audit tool for websites",
   "dependencies": {
     "axios": "^1.10.0",
     "chrome-launcher": "^1.2.0",
-    "color": "^5.0.0",
     "lighthouse": "^12.7.1",
     "node-html-parser": "^7.0.1",
+    "pa11y": "^9.0.0",
     "puppeteer": "^24.12.0"
   }
 }

@@ -8,7 +8,8 @@ This is a simple tool to audit websites for accessibility and performance issues
 
 > *1. Clone the repository 📥*
 > ```bash
-> git clone https://github.com/diegoSanchezRincon/accessibility-tester.git
+> git https://github.com/diegoSanchezRincon/AccessibilityReporter.git
+> cd AccessibilityReporter
 > ```
 > 
 > *2. Install dependencies 📦*
@@ -20,6 +21,7 @@ This is a simple tool to audit websites for accessibility and performance issues
 > ```bash
 > npm run audit -- [https://example.com]
 > ```
+> ⚠️ Remember to use -- to pass the URL as an argument to the script.
 > 
 > *4. Results 📁* - The results will be saved in a folder named `results` in the current directory within a subfolder named with the current date and the URL provided.
 

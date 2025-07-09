@@ -25,8 +25,6 @@ export async function auditPa11y(url, outFolder) {
     const results = await pa11y(url);
     const html = await htmlReporter.results(results);
 
-    console.log(results.issues.length);
-    
     // Save reports to file
     const pa11yJsonPath = path.join(outFolder, PA11Y_JSON_PATH);
     const pa11yHtmlPath = path.join(outFolder, PA11Y_HTML_PATH);

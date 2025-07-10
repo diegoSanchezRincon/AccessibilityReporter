@@ -35,18 +35,18 @@ export async function auditAxeCore(url, outFolder) {
 
     // Generate a readable Markdown report with violations
     console.log('📋 [AxeCore] Generando reporte de violaciones...');
-    const violationsMd = parseAxeResults(axeResults);
+    const { md, count } = parseAxeResults(axeResults);
 
     // Write report to file
     const violationsMdPath = path.join(outFolder, AXE_REPORT_FILE_NAME);
-    fs.writeFileSync(violationsMdPath, violationsMd);
+    fs.writeFileSync(violationsMdPath, md);
     console.log(`✅ [AxeCore] Reporte de violaciones generado: ${violationsMdPath}`);
 
     // Close browser
     await browser.close();
 
     return {
-        foundViolations: axeResults.violations.length,
+        foundViolations: count,
         reportPaths: {
             axePath: path.basename(axePath),
             violationsMdPath: path.basename(violationsMdPath),
@@ -58,10 +58,14 @@ export async function auditAxeCore(url, outFolder) {
  * Parses the axe-core results and generates a Markdown report.
  * 
  * @param {Object} axeResults The axe-core results
- * @returns 
+ * @returns {{
+ *   md: string,
+ *   count: number
+ * }} The Markdown report and the number of violations found.
  */
 function parseAxeResults(axeResults) {
     const violations = axeResults.violations;
+    let count = 0;
 
     let violationsMd = `# Reporte de Violaciones de Accesibilidad (axe-core)\n\n`;
     violations.forEach((v, i) => {
@@ -75,11 +79,15 @@ function parseAxeResults(axeResults) {
             violationsMd += `- HTML: \`${node.html}\`\n`;
             node.any.forEach((check) => {
                 violationsMd += `- ❗ ${check.message} (${check.id})\n`;
+                count++;
             });
             violationsMd += `\n`;
         });
         violationsMd += `---\n\n`;
     });
 
-    return violationsMd;
+    return {
+        md: violationsMd,
+        count: count,
+    };
 }

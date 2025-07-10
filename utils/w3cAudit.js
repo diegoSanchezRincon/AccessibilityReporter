@@ -19,17 +19,18 @@ export async function auditW3c(url) {
     });
 
     const w3cErrors = w3cRes.data.messages.filter(msg => msg.type === 'error');
+    const parsed = parseW3cErrors(w3cErrors);
 
     return {
         errorsCount: w3cErrors.length,
-        errorsOutput: parseW3cErrors(w3cErrors),
+        errorsOutput: parsed,
     };
 }
 
 function parseW3cErrors(w3cErrors) {
     if (w3cErrors.length === 0) return '';
-    
-    w3cErrors.map(e => {
+
+    return w3cErrors.map(e => {
         // Format the line and column
         let lineColumn = `**Línea:** ${e.lastLine}`;
         if (e.firstColumn && e.lastColumn) {
@@ -38,25 +39,23 @@ function parseW3cErrors(w3cErrors) {
             lineColumn += `, **Columna:** ${e.lastColumn}`;
         }
 
-        // Code block with the full extract
-        let extractBlock = '';
-        if (e.extract) extractBlock = `\n\`\`\`html\n${e.extract}\n\`\`\``;
-
         // Highlighted code block
-        let hiliteBlock = '';
-        if (typeof e.hiliteStart === 'number' && typeof e.hiliteLength === 'number' && e.extract) {
-            const before = e.extract.substring(0, e.hiliteStart);
-            const highlight = e.extract.substring(e.hiliteStart, e.hiliteStart + e.hiliteLength);
-            const after = e.extract.substring(e.hiliteStart + e.hiliteLength);
-            hiliteBlock = `\n**Fragmento destacado:**\n\`\`\`html\n${before}<mark>${highlight}</mark>${after}\n\`\`\``;
+        let codeBlock = '';
+        if (e.extract) {
+            if (typeof e.hiliteStart === 'number' && typeof e.hiliteLength === 'number') {
+                const before = e.extract.substring(0, e.hiliteStart);
+                const highlight = e.extract.substring(e.hiliteStart, e.hiliteStart + e.hiliteLength);
+                const after = e.extract.substring(e.hiliteStart + e.hiliteLength);
+                codeBlock = `\n**Fragmento destacado:**\n\`\`\`html\n${before}<mark>${highlight}</mark>${after}\n\`\`\``;
+            } else {
+                codeBlock = `\n**Fragmento:**\n\`\`\`html\n${e.extract}\n\`\`\``;
+            }
         }
 
         return `
 ---
 ${lineColumn}
-**Mensaje:** ${e.message}
-${extractBlock}
-${hiliteBlock}
+**Mensaje:** ${e.message}${codeBlock}
 `.trim();
     }).join('\n\n')
 }
